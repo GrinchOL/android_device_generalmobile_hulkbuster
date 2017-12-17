@@ -1,4 +1,4 @@
-Copyright (C) 2017 The LineageOS Project @FORUM.ONE-TEAMS.COM
+Copyright (C) 2017 The LineageOS Project @OneLabs.net
 
 Device Tree for General Mobile ETAB5 (etab5)
 ============================================================
@@ -38,6 +38,5 @@ Front Camera | 2.0 MP
 
   * VPN (not tested)
   * Camera
-  * Video playback at gallery
   * Microphone
   
