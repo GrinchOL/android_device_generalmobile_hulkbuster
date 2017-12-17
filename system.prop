@@ -1,0 +1,25 @@
+#
+# system.prop for mt6592 generic
+#
+
+# WiFi
+wifi.interface=wlan0
+wifi.tethering.interface=ap0
+wifi.direct.interface=p2p0
+
+# FM Radio
+fmradio.driver.enable=1
+
+# LCD density
+ro.sf.lcd_density=220
+
+# Graphics
+ro.opengles.version=131072
+
+# Zygote
+ro.zygote.preload.enable=0
+
+# Disable dirty region for Mali
+debug.hwui.render_dirty_regions=false
+
+qemu.hw.mainkeys=1
