@@ -1,4 +1,3 @@
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 # The gps config appropriate for this device
 $(call inherit-product, device/common/gps/gps_us_supl.mk)
 
@@ -9,7 +8,7 @@ PRODUCT_CHARACTERISTICS := tablet,nosdcard
 DEVICE_PACKAGE_OVERLAYS += $(DEVICE_PATH)/overlay
 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
-    LOCAL_KERNEL := $(LOCAL_PATH)/kernel
+    LOCAL_KERNEL := $(LOCAL_PATH)/kernel/kernel
 else
     LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
 endif
@@ -33,11 +32,11 @@ PRODUCT_PACKAGES += \
     tinymix
 
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf
+    $(DEVICE_PATH)/audio/audio_policy.conf:system/etc/audio_policy.conf
 
 # GSM
 PRODUCT_COPY_FILES += \
-     $(DEVICE_PATH)/configs/spn-conf.xml:system/etc/spn-conf.xml
+     $(DEVICE_PATH)/hostapd/spn-conf.xml:system/etc/spn-conf.xml
 
 # Bluetooth
 PRODUCT_PACKAGES += libbt-vendor
@@ -51,14 +50,18 @@ PRODUCT_PACKAGES += \
     wpa_supplicant.conf
 
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/hostapd/hostapd_default.conf:system/etc/hostapd/hostapd_default.conf \
-    $(DEVICE_PATH)/configs/hostapd/hostapd.accept:system/etc/hostapd/hostapd.accept \
-    $(DEVICE_PATH)/configs/hostapd/hostapd.deny:system/etc/hostapd/hostapd.deny
+    $(DEVICE_PATH)/hostapd/hostapd_default.conf:system/etc/hostapd/hostapd_default.conf \
+    $(DEVICE_PATH)/hostapd/hostapd.accept:system/etc/hostapd/hostapd.accept \
+    $(DEVICE_PATH)/hostapd/hostapd.deny:system/etc/hostapd/hostapd.deny
 
 # GPS
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/agps_profiles_conf2.xml:system/etc/agps_profiles_conf2.xml
+    $(DEVICE_PATH)/gps/agps_profiles_conf2.xml:system/etc/agps_profiles_conf2.xml
 
+# Doze
+PRODUCT_PACKAGES += \
+   OneLabsDoze
+	
 # Rootdir
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/rootdir/enableswap.sh:root/enableswap.sh \
@@ -72,7 +75,7 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/rootdir/sbin/poweroff.sh:recovery/root/sbin/poweroff.sh \
     $(DEVICE_PATH)/rootdir/sbin/rebootrecovery.sh:recovery/root/sbin/rebootrecovery.sh \
     $(DEVICE_PATH)/rootdir/sbin/rebootsystem.sh:recovery/root/sbin/rebootsystem.sh \
-    $(LOCAL_KERNEL):kernel
+    $(LOCAL_KERNEL):kernel/kernel
 
 # Permissions
 PRODUCT_COPY_FILES += \
@@ -99,8 +102,8 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.midi.xml:system/etc/permissions/android.software.midi.xml \
     frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
-    $(DEVICE_PATH)/configs/android.hardware.camera.xml:system/etc/permissions/android.hardware.camera.xml \
-    $(DEVICE_PATH)/configs/android.hardware.microphone.xml:system/etc/permissions/android.hardware.microphone.xml
+    $(DEVICE_PATH)/permissions/android.hardware.camera.xml:system/etc/permissions/android.hardware.camera.xml \
+    $(DEVICE_PATH)/permissions/android.hardware.microphone.xml:system/etc/permissions/android.hardware.microphone.xml
 
 # Keylayout
 PRODUCT_COPY_FILES += \
@@ -117,11 +120,11 @@ PRODUCT_PACKAGES += \
     
 # Media codecs
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/media_codecs.xml:system/etc/media_codecs.xml \
+    $(DEVICE_PATH)/media/media_codecs.xml:system/etc/media_codecs.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_video_le.xml:system/etc/media_codecs_google_video.xml \
-    $(DEVICE_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml	
+    $(DEVICE_PATH)/media/media_profiles.xml:system/etc/media_profiles.xml	
 
 # USB
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.sys.usb.config=mtp,adb

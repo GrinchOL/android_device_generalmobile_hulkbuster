@@ -14,7 +14,7 @@ TARGET_CPU_SMP := true
 TARGET_CPU_VARIANT := cortex-a7
 
 # Kernel 
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/kernel
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/kernel/kernel
 BOARD_KERNEL_CMDLINE :=
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_KERNEL_PAGESIZE := 2048
@@ -37,14 +37,14 @@ OLD_KERNEL := true
 
 # Custom bootimg
 BOARD_CUSTOM_MKBOOTIMG := mtkbootimg
-BOARD_CUSTOM_BOOTIMG_MK := $(DEVICE_PATH)/bootimg.mk
+BOARD_CUSTOM_BOOTIMG_MK := $(DEVICE_PATH)/kernel/bootimg.mk
 BOARD_CUSTOM_BOOTIMG := true
 
 # mkbootimg ARGS
 BOARD_MKBOOTIMG_ARGS := --mtk 1
 
 # Enable dex-preoptimization
-WITH_DEXPREOPT := false
+WITH_DEXPREOPT := true
 DONT_DEXPREOPT_PREBUILTS := true
 
 # Link libmtk_symbols
