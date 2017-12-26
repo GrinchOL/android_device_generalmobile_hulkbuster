@@ -8,7 +8,7 @@ PRODUCT_CHARACTERISTICS := tablet,nosdcard
 DEVICE_PACKAGE_OVERLAYS += $(DEVICE_PATH)/overlay
 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
-    LOCAL_KERNEL := $(LOCAL_PATH)/kernel/kernel
+    LOCAL_KERNEL := $(LOCAL_PATH)/kernel
 else
     LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
 endif
@@ -75,7 +75,7 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/rootdir/sbin/poweroff.sh:recovery/root/sbin/poweroff.sh \
     $(DEVICE_PATH)/rootdir/sbin/rebootrecovery.sh:recovery/root/sbin/rebootrecovery.sh \
     $(DEVICE_PATH)/rootdir/sbin/rebootsystem.sh:recovery/root/sbin/rebootsystem.sh \
-    $(LOCAL_KERNEL):kernel/kernel
+    $(LOCAL_KERNEL):kernel
 
 # Permissions
 PRODUCT_COPY_FILES += \
@@ -107,7 +107,7 @@ PRODUCT_COPY_FILES += \
 
 # Keylayout
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/mtk-kpd.kl:system/usr/keylayout/mtk-kpd.kl
+    $(DEVICE_PATH)/keylayout/mtk-kpd.kl:system/usr/keylayout/mtk-kpd.kl
 
 # FM Radio app
 PRODUCT_PACKAGES += \
