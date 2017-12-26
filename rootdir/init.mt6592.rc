@@ -1,14 +1,8 @@
 import init.mt6592.usb.rc
 import init.modem.rc
 
-on charger
-    mount ext4 /emmc@android /system ro wait
-    start drvbd
-    start ipod
-    start servicemanager
-
-    # disable USB
-    write /sys/devices/platform/mt_usb/cmode 0
+ on early-init
+    write /sys/class/leds/lcd-backlight/trigger "backlight"
 
 on init
    # See storage config details at http://source.android.com/tech/storage/
@@ -101,9 +95,9 @@ on init
     chmod 0660 /dev/kd_camera_flashlight
     chmod 0660 /dev/kd_camera_hw_bus2
     chmod 0660 /dev/FM50AF
-    chmod 0660 /dev/CAM_CAL_DRV
-    chmod 0660 /dev/DW9718AF		
+    chmod 0660 /dev/DW9718AF
     chmod 0660 /dev/OV8825AF
+    chmod 0660 /dev/CAM_CAL_DRV
 
     chown system camera /dev/camera-sysram
     chown system camera /dev/camera-isp
@@ -112,9 +106,9 @@ on init
     chown system camera /dev/kd_camera_flashlight
     chown system camera /dev/kd_camera_hw_bus2
     chown system camera /dev/FM50AF
+    chown system camera /dev/DW9718AF
+    chown system camera /dev/OV8825AF
     chown system camera /dev/CAM_CAL_DRV
-    chmod 0660 /dev/DW9718AF		
-    chmod 0660 /dev/OV8825AF
 
     chown system system /dev/RT_Monitor
     chmod 0600 /dev/RT_Monitor
@@ -243,7 +237,7 @@ on init
     chmod 0664 /dev/hdmitx
 
     # JPEG
-    chmod 0440 /dev/mtk_jpeg
+    chmod 0444 /dev/mtk_jpeg
     chown system camera /dev/mtk_jpeg
 
 on post-fs-data
@@ -331,6 +325,11 @@ on post-fs
     chmod 0770 /system/etc/ril
     chmod 0444 /system/etc/ril/oper.lis
     setprop rild.nw.operlist /system/etc/ril/oper.lis
+
+service charger /sbin/healthd -c
+     class charger
+     critical
+     seclabel u:r:healthd:s0
 
 service wmtLoader /system/bin/wmt_loader
     user root
