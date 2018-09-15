@@ -1,78 +1,53 @@
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
+#
+# Copyright (C) 2016 The CyanogenMod Project
+# Copyright (C) 2017 The LineageOS Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Inherit from proprietary version
+$(call inherit-product-if-exists, device/generalmobile/hulkbuster/hulkbuster-vendor.mk)
+
+# Dalvik
+$(call inherit-product, frameworks/native/build/tablet-10in-xhdpi-2048-dalvik-heap.mk)
+
 # The gps config appropriate for this device
 $(call inherit-product, device/common/gps/gps_us_supl.mk)
 
-$(call inherit-product-if-exists, $(VENDOR_PATH)/vendor.mk)
-
-PRODUCT_CHARACTERISTICS := tablet,nosdcard
-
+# Overlay
 DEVICE_PACKAGE_OVERLAYS += $(DEVICE_PATH)/overlay
 
-ifeq ($(TARGET_PREBUILT_KERNEL),)
-    LOCAL_KERNEL := $(LOCAL_PATH)/kernel
-else
-    LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
-endif
+# AAPT
+PRODUCT_AAPT_CONFIG := normal
+PRODUCT_AAPT_PREF_CONFIG := xhdpi
 
-PRODUCT_TAGS += dalvik.gc.type-precise
+# Boot animation
+TARGET_SCREEN_HEIGHT := 1920
+TARGET_SCREEN_WIDTH := 1200
 
-# Symbols
-PRODUCT_PACKAGES += libmtk_symbols
-
-# Memtrack
-PRODUCT_PACKAGES += memtrack.mt6592
-
-# Audio
-PRODUCT_PACKAGES += \
-    audio.primary.mt6592 \
-    audio_policy.default \
-    audio.a2dp.default \
-    audio.usb.default \
-    audio.r_submix.default \
-    libaudio-resampler \
-    tinymix
-
+# Ramdisk
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf
-
-# GSM
-PRODUCT_COPY_FILES += \
-     $(DEVICE_PATH)/configs/spn-conf.xml:system/etc/spn-conf.xml
-
-# Bluetooth
-PRODUCT_PACKAGES += libbt-vendor
-
-# Wifi
-PRODUCT_PACKAGES += \
-    lib_driver_cmd_mt66xx \
-    libwpa_client \
-    hostapd \
-    wpa_supplicant \
-    wpa_supplicant.conf
-
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/hostapd/hostapd_default.conf:system/etc/hostapd/hostapd_default.conf \
-    $(DEVICE_PATH)/configs/hostapd/hostapd.accept:system/etc/hostapd/hostapd.accept \
-    $(DEVICE_PATH)/configs/hostapd/hostapd.deny:system/etc/hostapd/hostapd.deny
-
-# GPS
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/agps_profiles_conf2.xml:system/etc/agps_profiles_conf2.xml
-
-# Rootdir
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/rootdir/enableswap.sh:root/enableswap.sh \
-    $(DEVICE_PATH)/rootdir/fstab.mt6592:root/fstab.mt6592 \
-    $(DEVICE_PATH)/rootdir/init.modem.rc:root/init.modem.rc \
-    $(DEVICE_PATH)/rootdir/init.mt6592.rc:root/init.mt6592.rc \
-    $(DEVICE_PATH)/rootdir/init.mt6592.usb.rc:root/init.mt6592.usb.rc \
-    $(DEVICE_PATH)/rootdir/ueventd.mt6592.rc:root/ueventd.mt6592.rc \
-	$(DEVICE_PATH)/rootdir/ueventd.rc:root/ueventd.rc \
-    $(DEVICE_PATH)/rootdir/twrp.fstab:recovery/root/etc/twrp.fstab \
-    $(DEVICE_PATH)/rootdir/sbin/poweroff.sh:recovery/root/sbin/poweroff.sh \
-    $(DEVICE_PATH)/rootdir/sbin/rebootrecovery.sh:recovery/root/sbin/rebootrecovery.sh \
-    $(DEVICE_PATH)/rootdir/sbin/rebootsystem.sh:recovery/root/sbin/rebootsystem.sh \
-    $(LOCAL_KERNEL):kernel
+    $(LOCAL_PATH)/rootdir/enableswap.sh:root/enableswap.sh \
+    $(LOCAL_PATH)/rootdir/fstab.mt6592:root/fstab.mt6592 \
+    $(LOCAL_PATH)/rootdir/init.modem.rc:root/init.modem.rc \
+    $(LOCAL_PATH)/rootdir/init.mt6592.rc:root/init.mt6592.rc \
+    $(LOCAL_PATH)/rootdir/init.mt6592.usb.rc:root/init.mt6592.usb.rc \
+    $(LOCAL_PATH)/rootdir/ueventd.mt6592.rc:root/ueventd.mt6592.rc \
+	$(LOCAL_PATH)/rootdir/ueventd.rc:root/ueventd.rc \
+    $(LOCAL_PATH)/rootdir/twrp.fstab:recovery/root/etc/twrp.fstab \
+    $(LOCAL_PATH)/rootdir/sbin/poweroff.sh:recovery/root/sbin/poweroff.sh \
+    $(LOCAL_PATH)/rootdir/sbin/rebootrecovery.sh:recovery/root/sbin/rebootrecovery.sh \
+    $(LOCAL_PATH)/rootdir/sbin/rebootsystem.sh:recovery/root/sbin/rebootsystem.sh \
+    $(LOCAL_PATH):kernel
 
 # Permissions
 PRODUCT_COPY_FILES += \
@@ -102,36 +77,69 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/configs/android.hardware.camera.xml:system/etc/permissions/android.hardware.camera.xml \
     $(DEVICE_PATH)/configs/android.hardware.microphone.xml:system/etc/permissions/android.hardware.microphone.xml
 
-# Keylayout
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/mtk-kpd.kl:system/usr/keylayout/mtk-kpd.kl
+# Haters gonna hate...
+PRODUCT_CHARACTERISTICS := tablet,nosdcard
 
-# FM Radio app
+# Symbols
+PRODUCT_PACKAGES += \
+    libmtk_symbols
+
+# Audio
+PRODUCT_PACKAGES += \
+    audio.primary.mt6592 \
+    audio_policy.default \
+    audio.a2dp.default \
+    audio.usb.default \
+    audio.r_submix.default \
+    libaudio-resampler \
+    tinymix
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/audio/audio_policy.conf:system/etc/audio_policy.conf
+
+# Bluetooth
+PRODUCT_PACKAGES += \
+    libbt-vendor
+
+# Display
+PRODUCT_PACKAGES += \
+    memtrack.mt6592
+
+# FM Radio
 PRODUCT_PACKAGES += \
     FMRadio \
     libfmjni
 
-# Substratum
-PRODUCT_PACKAGES += \
-    ThemeInterfacer
-    
-# Media codecs
+# GPS
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/media_codecs.xml:system/etc/media_codecs.xml \
+    $(LOCAL_PATH)/gps/etc/agps_profiles_conf2.xml:system/etc/agps_profiles_conf2.xml
+
+# Keylayout
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/keylayout/mtk-kpd.kl:system/usr/keylayout/mtk-kpd.kl
+    
+# Media
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/media/media_codecs.xml:system/etc/media_codecs.xml \
+    $(LOCAL_PATH)/media/media_profiles.xml:system/etc/media_profiles.xml
+
+PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_video_le.xml:system/etc/media_codecs_google_video.xml \
-    $(DEVICE_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml	
+
+# Substratum
+PRODUCT_PACKAGES += \
+    ThemeInterfacer
+
+# Telephony
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/configs/spn-conf.xml:system/etc/spn-conf.xml
 
 # USB
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.sys.usb.config=mtp,adb
-
-# AAPT
-PRODUCT_AAPT_CONFIG := normal
-PRODUCT_AAPT_PREF_CONFIG := xhdpi
-
 PRODUCT_PACKAGES += \
     librs_jni \
     com.android.future.usb.accessory
 
-$(call inherit-product, frameworks/native/build/tablet-10in-xhdpi-2048-dalvik-heap.mk)
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    persist.sys.usb.config=mtp,adb

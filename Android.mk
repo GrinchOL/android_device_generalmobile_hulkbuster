@@ -14,23 +14,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Inherit some common LineageOS stuff.
-$(call inherit-product, vendor/cm/config/common_full_tablet_wifionly.mk)
+LOCAL_PATH := $(call my-dir)
 
-# Inherit device configuration
-$(call inherit-product, device/generalmobile/hulkbuster/device.mk)
+ifeq ($(TARGET_DEVICE), hulkbuster)
 
-# Product
-PRODUCT_DEVICE := hulkbuster
-PRODUCT_NAME := lineage_hulkbuster
-PRODUCT_BRAND := GeneralMobile
-PRODUCT_MODEL := hulkbuster
-PRODUCT_MANUFACTURER := GeneralMobile
+include $(call all-makefiles-under,$(LOCAL_PATH))
 
-# Release name
-PRODUCT_RELEASE_NAME := hulkbuster
+include $(CLEAR_VARS)
 
-PRODUCT_TAGS += dalvik.gc.type-precise
+ALL_PREBUILT += $(INSTALLED_KERNEL_TARGET)
 
-# Superuser
-WITH_SU = true
+ifneq ($(TARGET_PREBUILT_KERNEL),)
+$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr:
+	mkdir -p $@
+endif
+
+endif
